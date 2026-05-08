@@ -99,13 +99,21 @@ function initScrollAnimations() {
         scrollTrigger: {
             trigger: "#main",
             start: "top top",
+            endTrigger: "#section4",
             end: "bottom bottom",
             scrub: 0.5,
-            onUpdate: (self) => {
-                gsap.to("#progress-bar", { width: `${self.progress * 100}%`, duration: 0.1 });
-            }
         },
         onUpdate: render
+    });
+
+    // Full Page Progress Bar
+    ScrollTrigger.create({
+        trigger: "#main",
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+            gsap.to("#progress-bar", { width: `${self.progress * 100}%`, duration: 0.1 });
+        }
     });
 
     // Split Text and Animate
@@ -124,6 +132,9 @@ function initScrollAnimations() {
         if (title) {
             splitText(title);
             const chars = title.querySelectorAll(".char");
+            
+            // Delay the last section slightly more for "next scroll" feel
+            const startPos = section.id === "section5" ? "top 85%" : "top 70%";
 
             gsap.fromTo(chars, 
                 { opacity: 0, y: 50, rotateX: -90 },
@@ -136,7 +147,7 @@ function initScrollAnimations() {
                     ease: "back.out(1.7)",
                     scrollTrigger: {
                         trigger: section,
-                        start: "top 70%",
+                        start: startPos,
                         end: "bottom 30%",
                         toggleActions: "play reverse play reverse",
                     }
@@ -145,6 +156,8 @@ function initScrollAnimations() {
         }
 
         if (subtext) {
+            const startPos = section.id === "section5" ? "top 80%" : "top 65%";
+            
             gsap.fromTo(subtext,
                 { opacity: 0, y: 30 },
                 {
@@ -154,7 +167,7 @@ function initScrollAnimations() {
                     ease: "power3.out",
                     scrollTrigger: {
                         trigger: section,
-                        start: "top 65%",
+                        start: startPos,
                         end: "bottom 35%",
                         toggleActions: "play reverse play reverse",
                     }
